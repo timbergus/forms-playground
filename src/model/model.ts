@@ -10,3 +10,5 @@ export const isRequired = (
   }
   return requirements[property]
 }
+
+export type IsRequired = typeof isRequired

@@ -1,10 +1,15 @@
+import { z } from 'zod'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from './components/Input'
-import { Values, schema } from './schemas/schema'
+import { useSchema } from './schemas/useSchema'
 import { useEffect } from 'react'
+import { isRequired } from './model/model'
 
 function App() {
+  const schema = useSchema(isRequired)
+  type Values = z.infer<typeof schema>
+
   const {
     handleSubmit,
     register,
