@@ -5,8 +5,11 @@ import { Input } from './components/Input'
 import { useSchema } from './schemas/useSchema'
 import { useEffect } from 'react'
 import { isRequired } from './model/model'
+import { useTranslation } from 'react-i18next'
 
 function App() {
+  const { t: translation } = useTranslation()
+
   const schema = useSchema(isRequired)
   type Values = z.infer<typeof schema>
 
@@ -39,36 +42,41 @@ function App() {
       className="w-1/3 grid gap-4 ml-auto mr-auto py-2"
     >
       <Input
-        label="First name"
+        label={translation('first-name', 'First name')}
         type="text"
         error={errors.firstName?.message}
         {...register('firstName')}
       />
       <Input
-        label="Last name"
+        label={translation('last-name', 'Last name')}
         type="text"
         error={errors.lastName?.message}
         {...register('lastName')}
       />
       <Input
-        label="Date of birth"
+        label={translation('birth-date', 'Birth date')}
         type="date"
         error={errors.birthDate?.message}
         {...register('birthDate')}
       />
       <Input
-        label="Age"
+        label={translation('age', 'Age')}
         type="number"
         error={errors.age?.message}
         {...register('age', { valueAsNumber: true })}
       />
       <Input
-        label="Email"
+        label={translation('email', 'Email')}
         type="email"
         error={errors.email?.message}
         {...register('email')}
       />
-      <button type="submit">Submit</button>
+      <button
+        className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        type="submit"
+      >
+        {translation('submit-form', 'Submit form')}
+      </button>
     </form>
   )
 }

@@ -1,13 +1,19 @@
 import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 
-type IntegerValidator = {
+type IntegerValidationHookParams = {
   min?: number
   max?: number
   isRequired: boolean
 }
 
-export const integerValidator = ({ min, max, isRequired }: IntegerValidator) =>
-  z
+export const useIntegerValidation = ({
+  min,
+  max,
+  isRequired,
+}: IntegerValidationHookParams) => {
+  const { t: translation } = useTranslation()
+  return z
     .number()
     .int()
     .positive()
@@ -16,7 +22,7 @@ export const integerValidator = ({ min, max, isRequired }: IntegerValidator) =>
     .or(z.literal(null))
     .or(z.literal(undefined))
     .refine((value) => !isRequired || value, {
-      message: 'This field is required',
+      message: translation('field-required', 'This field is required'),
     })
     .refine(
       (value) => {
@@ -26,7 +32,11 @@ export const integerValidator = ({ min, max, isRequired }: IntegerValidator) =>
         return true
       },
       {
-        message: `It has to be greater or equal than ${min}`,
+        message: translation(
+          'field-too-small',
+          'This field has to be greater or equal than {{min}}',
+          { min }
+        ),
       }
     )
     .refine(
@@ -37,7 +47,12 @@ export const integerValidator = ({ min, max, isRequired }: IntegerValidator) =>
         return true
       },
       {
-        message: `It has to be smaller or equal than ${max}`,
+        message: translation(
+          'field-too-big',
+          'This field has to be smaller or equal than {{max}}',
+          { max }
+        ),
       }
     )
     .transform((value) => value || null)
+}

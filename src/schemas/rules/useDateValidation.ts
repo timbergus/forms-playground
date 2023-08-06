@@ -1,20 +1,26 @@
 import { z } from 'zod'
 import { DateTime } from 'luxon'
+import { useTranslation } from 'react-i18next'
 
-type DateValidator = {
+type DateValidationHookParams = {
   min?: Date
   max?: Date
   isRequired: boolean
 }
 
-export const dateValidator = ({ min, max, isRequired }: DateValidator) =>
-  z
+export const useDateValidation = ({
+  min,
+  max,
+  isRequired,
+}: DateValidationHookParams) => {
+  const { t: translation } = useTranslation()
+  return z
     .string()
     .or(z.literal(''))
     .or(z.literal(null))
     .or(z.literal(undefined))
     .refine((value) => !isRequired || value, {
-      message: 'This field is required',
+      message: translation('field-required', 'This field is required'),
     })
     .refine(
       (value) => {
@@ -25,9 +31,11 @@ export const dateValidator = ({ min, max, isRequired }: DateValidator) =>
         return true
       },
       {
-        message: `the date must be after ${DateTime.fromJSDate(min!).toFormat(
-          'dd-MM-yyyy'
-        )}`,
+        message: translation(
+          'date-too-early',
+          'The date must be after {{date}}',
+          { date: DateTime.fromJSDate(min!).toFormat('dd-MM-yyyy') }
+        ),
       }
     )
     .refine(
@@ -39,9 +47,12 @@ export const dateValidator = ({ min, max, isRequired }: DateValidator) =>
         return true
       },
       {
-        message: `the date must be before ${DateTime.fromJSDate(max!).toFormat(
-          'dd-MM-yyyy'
-        )}`,
+        message: translation(
+          'date-too-late',
+          'The date must be before {{date}}',
+          { date: DateTime.fromJSDate(max!).toFormat('dd-MM-yyyy') }
+        ),
       }
     )
     .transform((value) => (value ? new Date(value).toISOString() : null))
+}
