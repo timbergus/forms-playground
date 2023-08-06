@@ -18,10 +18,26 @@ export const integerValidator = ({ min, max, isRequired }: IntegerValidator) =>
     .refine((value) => !isRequired || value, {
       message: 'This field is required',
     })
-    .refine((value) => (isRequired ? min && Number(value) >= min : true), {
-      message: `It has to be greater or equal to ${min}`,
-    })
-    .refine((value) => (isRequired ? max && Number(value) <= max : true), {
-      message: `It has to be smaller or equal to ${max}`,
-    })
+    .refine(
+      (value) => {
+        if (min && value && value < min) {
+          return false
+        }
+        return true
+      },
+      {
+        message: `It has to be greater or equal than ${min}`,
+      }
+    )
+    .refine(
+      (value) => {
+        if (max && value && value > max) {
+          return false
+        }
+        return true
+      },
+      {
+        message: `It has to be smaller or equal than ${max}`,
+      }
+    )
     .transform((value) => value || null)

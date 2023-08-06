@@ -16,15 +16,25 @@ export const stringValidator = ({ min, max, isRequired }: StringValidator) =>
       message: 'This field is required',
     })
     .refine(
-      (value) => (isRequired ? min && (value?.length ?? 0) >= min : true),
+      (value) => {
+        if (min && value && value.length < min) {
+          return false
+        }
+        return true
+      },
       {
-        message: `It has to be longer or equal to ${min}`,
+        message: `It has to be longer or equal than ${min}`,
       }
     )
     .refine(
-      (value) => (isRequired ? max && (value?.length ?? 0) <= max : true),
+      (value) => {
+        if (max && value && value.length > max) {
+          return false
+        }
+        return true
+      },
       {
-        message: `It has to be sorter or equal to ${max}`,
+        message: `It has to be sorter or equal than ${max}`,
       }
     )
     .transform((value) => value || null)

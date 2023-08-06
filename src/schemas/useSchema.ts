@@ -25,7 +25,6 @@ export const useSchema = (isRequired: IsRequired) =>
       }),
       age: integerValidator({
         min: 18,
-        max: 30,
         isRequired: isRequired('age'),
       }),
       email: emailValidator(isRequired('email')),

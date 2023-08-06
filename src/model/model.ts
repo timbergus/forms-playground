@@ -2,11 +2,11 @@ export const isRequired = (
   property: 'firstName' | 'lastName' | 'birthDate' | 'age' | 'email'
 ) => {
   const requirements = {
-    firstName: true,
-    lastName: true,
-    birthDate: true,
-    age: true,
-    email: true,
+    firstName: false,
+    lastName: false,
+    birthDate: false,
+    age: false,
+    email: false,
   }
   return requirements[property]
 }

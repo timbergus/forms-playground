@@ -23,7 +23,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             id={id}
             ref={ref}
             className={classNames(
-              'block w-full rounded-md border-0 p-2 ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6',
+              'block w-full rounded-md border-0 p-2 ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 outline-none',
               {
                 'pr-10 text-red-900 ring-red-300 placeholder:text-red-300':
                   error,
