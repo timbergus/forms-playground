@@ -12,4 +12,4 @@ export const emailValidator = (isRequired: boolean) =>
     .refine((value) => !isRequired || value, {
       message: 'This field is required',
     })
-    .transform((value) => (value ? value : null))
+    .transform((value) => value || null)

@@ -9,10 +9,25 @@ import { IsRequired } from '../model/model'
 export const useSchema = (isRequired: IsRequired) =>
   z
     .object({
-      firstName: stringValidator(isRequired('firstName')),
-      lastName: stringValidator(isRequired('lastName')),
-      birthDate: dateValidator(isRequired('birthDate')),
-      age: integerValidator(isRequired('age')),
+      firstName: stringValidator({
+        min: 3,
+        max: 10,
+        isRequired: isRequired('firstName'),
+      }),
+      lastName: stringValidator({
+        min: 3,
+        max: 10,
+        isRequired: isRequired('lastName'),
+      }),
+      birthDate: dateValidator({
+        max: new Date(),
+        isRequired: isRequired('birthDate'),
+      }),
+      age: integerValidator({
+        min: 18,
+        max: 30,
+        isRequired: isRequired('age'),
+      }),
       email: emailValidator(isRequired('email')),
     })
     .superRefine((value, { addIssue }) => {

@@ -1,12 +1,16 @@
 import { z } from 'zod'
 
-export const integerValidator = (isRequired: boolean) =>
+type IntegerValidator = {
+  min?: number
+  max?: number
+  isRequired: boolean
+}
+
+export const integerValidator = ({ min, max, isRequired }: IntegerValidator) =>
   z
     .number()
     .int()
     .positive()
-    .min(18)
-    .max(100)
     .or(z.nan())
     .or(z.literal(''))
     .or(z.literal(null))
@@ -14,4 +18,10 @@ export const integerValidator = (isRequired: boolean) =>
     .refine((value) => !isRequired || value, {
       message: 'This field is required',
     })
-    .transform((value) => (value ? value : null))
+    .refine((value) => (isRequired ? min && Number(value) >= min : true), {
+      message: `It has to be greater or equal to ${min}`,
+    })
+    .refine((value) => (isRequired ? max && Number(value) <= max : true), {
+      message: `It has to be smaller or equal to ${max}`,
+    })
+    .transform((value) => value || null)
