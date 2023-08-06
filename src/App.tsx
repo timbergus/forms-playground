@@ -1,13 +1,16 @@
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from './components/Input'
 import { Values, schema } from './schemas/schema'
+import { useEffect } from 'react'
 
 function App() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, touchedFields },
+    trigger,
+    control,
   } = useForm<Values>({
     resolver: zodResolver(schema),
   })
@@ -15,6 +18,15 @@ function App() {
   const onSubmit = (data: Values) => {
     console.log('🚀 ~ file: App.tsx:17 ~ onSubmit ~ data:', data)
   }
+
+  const birthDate = useWatch({ name: 'birthDate', control })
+  const age = useWatch({ name: 'age', control })
+
+  useEffect(() => {
+    if (touchedFields.age && touchedFields.birthDate) {
+      trigger()
+    }
+  }, [age, birthDate, touchedFields.age, touchedFields.birthDate, trigger])
 
   return (
     <form
