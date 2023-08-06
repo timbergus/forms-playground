@@ -38,7 +38,7 @@ i18n
           'field-too-big': 'Este campo debe ser menor o igual que {{max}}',
           'field-too-small': 'Este campo debe ser mayor o igual que {{min}}',
           'date-too-early': 'La fecha debe ser posterior al {{date}}',
-          'date-too-late': 'la fecha debe ser anterior al {{date}}',
+          'date-too-late': 'La fecha debe ser anterior al {{date}}',
           'first-name': 'Nombre',
           'last-name': 'Apellido',
           'birth-date': 'Fecha de nacimiento',
