@@ -1,27 +1,24 @@
-# React + TypeScript + Vite
+# Forms Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Simple project to implemente a modular form.
 
-Currently, two official plugins are available:
+## Configuration
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+There is a `src/model/model.ts` where you can define the required status of the form fields.
 
-## Expanding the ESLint configuration
+## Architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This form uses a modular approach. Instead of writing the schema for the form, I have extracted the validations into hooks that validates:
 
-- Configure the top-level `parserOptions` property like this:
+* strings
+* integers
+* dates
+* emails
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+They have common parameters like `min`, `max`, and `isRequired`. The `isRequired` has the main logic to make the field required. The rest only define the field properties.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Any additional or special validations can be made into the `superRefine` method of the main schema.
+
+## Logic
+
+Every field is optional, and then we check if it is required in a `refine` method. After that, we validate the additional properties like `min` or `max`.
