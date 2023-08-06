@@ -10,23 +10,21 @@ export const schema = z
   .object({})
   .merge(stringValidator('firstName', isRequired('firstName')))
   .merge(stringValidator('lastName', isRequired('lastName')))
-  .merge(dateValidator('dateOfBirth', isRequired('dateOfBirth')))
+  .merge(dateValidator('birthDate', isRequired('birthDate')))
   .merge(integerValidator('age', isRequired('age')))
   .merge(emailValidator('email', isRequired('email')))
   .superRefine((value, { addIssue }) => {
-    if (value.dateOfBirth && value.age) {
-      const dateOfBirth = DateTime.fromISO(value.dateOfBirth)
+    if (value.birthDate && value.age) {
+      const birthDate = DateTime.fromISO(value.birthDate)
       const now = DateTime.now()
       const years = Math.floor(
-        now.diff(dateOfBirth, ['years']).toObject().years ?? 0
+        now.diff(birthDate, ['years']).toObject().years ?? 0
       )
-      console.log('🚀 ~ file: schema.ts:24 ~ .superRefine ~ years:', years)
-
       if (Number(value.age) !== years) {
         addIssue({
           code: z.ZodIssueCode.custom,
           path: ['age'],
-          message: 'Please, set a correct age or a correct birth date.',
+          message: 'The age and birth date does not match.',
         })
       }
     }

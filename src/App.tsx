@@ -36,8 +36,8 @@ function App() {
       <Input
         label="Date of birth"
         type="date"
-        error={errors.dateOfBirth?.message}
-        {...register('dateOfBirth')}
+        error={errors.birthDate?.message}
+        {...register('birthDate')}
       />
       <Input
         label="Age"
